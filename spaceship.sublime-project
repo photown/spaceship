@@ -1,0 +1,12 @@
+{
+    "folders":
+    [
+        {
+            "path": "."
+        }
+    ],
+    "virtualenv": "/home/toni/.virtualenvs/spaceship",
+    "settings": {
+        "python_interpreter": "/home/toni/.virtualenvs/spaceship/bin/python"
+    }
+}
