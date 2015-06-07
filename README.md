@@ -34,7 +34,7 @@ You can also name the channel like so:
 $ echo omg named channel! | spaceship -channel Enterprise
 ```
 
-That way, another machine can only receive data if it runs `spaceship` with the same name:
+That way, another machine can only receive data if it runs `spaceship` with the same channel name:
 ```
 $ spaceship -channel Enterprise
 ```
