@@ -31,12 +31,12 @@ This way the two machines pair and the second one receives `omg spaceship!`
 
 You can also name the channel like so:
 ```
-$ echo omg named channel! | spaceship -channel Enterprise
+$ echo omg named channel! | spaceship --channel Enterprise
 ```
 
 That way, another machine can only receive data if it runs `spaceship` with the same channel name:
 ```
-$ spaceship -channel Enterprise
+$ spaceship --channel Enterprise
 ```
 
 ##File streaming
@@ -68,7 +68,7 @@ $ spaceship chat
 
 or with a named channel:
 ```
-$ spaceship chat -channel Spock
+$ spaceship chat --channel Spock
 ```
 
 When one of the machines writes a message, it gets sent to the other machine.
