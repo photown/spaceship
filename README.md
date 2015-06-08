@@ -1,4 +1,4 @@
-# SPACESHIP
+# Spaceship
 Python terminal utility for chat and streaming files across two Linux machines on the same network.
 
 ##Installation
