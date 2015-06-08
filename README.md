@@ -10,7 +10,7 @@ $ pip install spaceship
 
 You can also install the development version (may have bugs):
 ```
-$ pip install git+git://github.com/antoan-angelov/SPACESHIP.git#egg=spaceship
+$ pip install git+git://github.com/antoan-angelov/spaceship.git#egg=spaceship
 ```
 
 ##How to use
