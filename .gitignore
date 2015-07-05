@@ -55,3 +55,7 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# Sublime Text project files
+spaceship.sublime-project
+spaceship.sublime-workspace
