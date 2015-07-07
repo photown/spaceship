@@ -8,7 +8,7 @@ class ClientConnection:
 
     def start(self):
         self.clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.clientsocket.connect((self.server_ip[0], 8087))
+        self.clientsocket.connect(("192.168.1.100", 8087))
 
         self.read_from_server()
 

@@ -5,26 +5,33 @@ import time, threading, traceback
 import fcntl
 import struct
 import netifaces
+from core import ClientConnection
 from netifaces import AF_INET
-from core import ServerHandshake, ClientHandshake
+from core import ServerBroadcast, BroadcastListener
 
 def main(args=None):
     global server_handshake
     global client_handshake
 
-    is_server = False
+    current_ip = netifaces.ifaddresses("eth0")[AF_INET][0]['addr']
+    current_handshake = BroadcastListener.BroadcastListener(current_ip)
+    current_handshake.start()
+
+    keep_on(current_handshake, current_ip)
+
+def keep_on(current_handshake, current_ip):
+    global server_handshake
+    global client_connection
     
-    if len(args) > 1 and args[1] == 'server':
-        is_server = True
-    
+    is_server = current_handshake.is_server
+
     if is_server:
-        server_ip = netifaces.ifaddresses("eth0")[AF_INET][0]['addr']
-        server_handshake = ServerHandshake.ServerHandshake(server_ip)
+        server_ip = current_ip
+        server_handshake = ServerBroadcast.ServerBroadcast(server_ip)
         server_handshake.start()
     else:
-        client_ip = netifaces.ifaddresses("eth0")[AF_INET][0]['addr']
-        client_handshake = ClientHandshake.ClientHandshake(client_ip)
-        client_handshake.start()
+        client_connection = ClientConnection.ClientConnection(current_handshake.server_ip, current_ip)
+        client_connection.start()
     
 
 if __name__ == "__main__":

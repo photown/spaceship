@@ -2,9 +2,8 @@ import socket
 import sys
 
 class ServerConnection:
-    def __init__(self, server_ip, client_ip):
+    def __init__(self, server_ip):
         self.server_ip = server_ip
-        self.client_ip = client_ip
 
     def start(self):
         self.serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
