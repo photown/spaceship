@@ -29,7 +29,3 @@ class BroadcastListener:
             self.sock.close()
         except socket.timeout:
             pass
-
-    def init_client(self, server_ip):
-        self.client_connection = ClientConnection.ClientConnection(server_ip, self.client_ip)
-        self.client_connection.start()
