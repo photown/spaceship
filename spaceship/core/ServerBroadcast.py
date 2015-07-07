@@ -1,7 +1,6 @@
 import socket
-import time, threading, traceback
+import threading
 from core import ServerConnection
-import sys
 
 class ServerBroadcast:
 
@@ -20,6 +19,9 @@ class ServerBroadcast:
         self.cs.sendto('kittens'.encode(), ('255.255.255.255', 8089))
         self.timer = threading.Timer(1, self.ping_broadcast)
         self.timer.start()
+
+        if hasattr(self, 'server_connection') and self.server_connection.is_connected:
+            self.timer.cancel()
 
     def init_server(self):
         self.server_connection = ServerConnection.ServerConnection(self.server_ip)
