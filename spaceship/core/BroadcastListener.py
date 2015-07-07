@@ -25,7 +25,7 @@ class BroadcastListener:
             message, server_ip = self.sock.recvfrom(128)
             self.is_server = False
             self.server_ip = server_ip[0]
-            self.sock.sendto("I am here".encode(), server_ip)
+            self.sock.sendto("puppies".encode(), server_ip)
             self.sock.close()
         except socket.timeout:
             pass

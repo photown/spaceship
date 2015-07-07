@@ -19,10 +19,8 @@ class ServerConnection:
         while True:
             data = sys.stdin.read(128)
             connection.send(data)
-            print("sending...")
             if not data:
                 connection.close()
                 self.serversocket.close()
-                print("all done!")
                 break
 

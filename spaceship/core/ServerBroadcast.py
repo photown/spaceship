@@ -6,6 +6,7 @@ class ServerBroadcast:
 
     def __init__(self, server_ip):
         self.server_ip = server_ip
+        self.server_connection = None
 
     def start(self):
         self.cs = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -20,7 +21,7 @@ class ServerBroadcast:
         self.timer = threading.Timer(1, self.ping_broadcast)
         self.timer.start()
 
-        if hasattr(self, 'server_connection') and self.server_connection.is_connected:
+        if not self.server_connection is None and self.server_connection.is_connected:
             self.timer.cancel()
 
     def init_server(self):
