@@ -4,9 +4,11 @@ from core import ServerConnection
 
 class ServerBroadcast:
 
-    def __init__(self, server_ip):
+    def __init__(self, server_ip, channel, mode):
         self.server_ip = server_ip
+        self.channel = channel
         self.server_connection = None
+        self.mode = mode
 
     def start(self):
         self.cs = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -17,7 +19,7 @@ class ServerBroadcast:
         self.init_server()
 
     def ping_broadcast(self):
-        self.cs.sendto('kittens'.encode(), ('255.255.255.255', 8089))
+        self.cs.sendto(self.channel.encode(), ('255.255.255.255', 8089))
         self.timer = threading.Timer(1, self.ping_broadcast)
         self.timer.start()
 
@@ -25,5 +27,5 @@ class ServerBroadcast:
             self.timer.cancel()
 
     def init_server(self):
-        self.server_connection = ServerConnection.ServerConnection(self.server_ip)
+        self.server_connection = ServerConnection.ServerConnection(self.server_ip, self.mode)
         self.server_connection.start()
