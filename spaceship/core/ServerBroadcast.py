@@ -1,14 +1,15 @@
 import socket
 import threading
-from core import ServerConnection
+from core.ServerConnection import ServerConnection
 
 class ServerBroadcast:
 
-    def __init__(self, server_ip, channel, mode):
+    def __init__(self, server_ip, channel, mode, callbacks):
         self.server_ip = server_ip
         self.channel = channel
         self.server_connection = None
         self.mode = mode
+        self.callbacks = callbacks
 
     def start(self):
         self.cs = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -27,5 +28,5 @@ class ServerBroadcast:
             self.timer.cancel()
 
     def init_server(self):
-        self.server_connection = ServerConnection.ServerConnection(self.server_ip, self.mode)
+        self.server_connection = ServerConnection(self.server_ip, self.mode, self.callbacks)
         self.server_connection.start()

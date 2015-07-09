@@ -4,10 +4,15 @@ from threading import Thread
 import getpass
 
 class ClientConnection:
-    def __init__(self, server_ip, client_ip, mode):
+    def __init__(self, server_ip, client_ip, mode, callbacks):
         self.server_ip = server_ip
         self.client_ip = client_ip
         self.mode = mode
+
+        if mode == 'chat':
+            self.ready_for_chat, self.on_send, self.on_receive = callbacks
+        elif mode == 'transfer':
+            self.transfer_send, self.transfer_receive = callbacks
 
     def start(self):
         self.clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -20,7 +25,7 @@ class ClientConnection:
             while True:
                 buf = self.clientsocket.recv(128)
                 if len(buf) > 0:
-                    sys.stdout.buffer.write(buf)
+                    self.transfer_receive(buf)
                 else:
                     break
             self.clientsocket.close()
@@ -29,20 +34,14 @@ class ClientConnection:
             self.thread.daemon = True
             self.thread.start()
 
-            while True:
-                try:
-                    data = input("")
-                    self.clientsocket.send(data.encode())
-                    print('\r\033[1A\033[0;;35mme: ' + data + '\033[0m')
-                except KeyboardInterrupt:
-                    self.clientsocket.close()
-                    break
-            
+            self.ready_for_chat(self.send_message)
+    
+    def send_message(self, message):
+        self.clientsocket.send(message.encode())
+        self.on_send(message)
             
     def printer(self):
         while True:
             buf = self.clientsocket.recv(128)
             if len(buf) > 0:
-                    print('\033[0;;34m' + getpass.getuser() + "<" + self.client_ip + ">: " + buf.decode() + '\033[0m')
-            #else:
-            #    break
+                self.on_receive(getpass.getuser(), self.client_ip, buf.decode())
