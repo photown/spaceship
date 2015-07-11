@@ -1,19 +1,13 @@
 import socket
-import sys
-from threading import Thread
-import getpass
 import os
+import getpass
+from threading import Thread
+
 
 class ServerConnection:
-    def __init__(self, server_ip, mode, callbacks):
+    def __init__(self, server_ip, callbacks):
         self.server_ip = server_ip
         self.is_connected = False
-        self.mode = mode
-
-        if mode == 'chat':
-            self.ready_for_chat, self.on_send, self.on_receive = callbacks
-        elif mode == 'transfer':
-            self.transfer_send, self.transfer_receive = callbacks
 
     def start(self):
         self.serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -34,24 +28,20 @@ class ServerConnection:
         self.is_connected = True
         self.connection = connection
 
-        if self.mode == 'transfer':
-            self.transfer_send(self.stream_buffer)
-        elif self.mode == 'chat':
-            self.thread = Thread(target = self.printer)
-            self.thread.daemon = True
-            self.thread.start()
+        self.write_to_client()
 
-            self.ready_for_chat(self.send_message)
-    
-    def stream_buffer(self, stream_buffer):
-        while True:
-            data = stream_buffer.read(128)
-            if data:
-                self.connection.send(data)
-            else:
-                self.connection.close()
-                self.serversocket.close()
-                break
+
+class ChatServer(ServerConnection):
+    def __init__(self, server_ip, callbacks):
+        ServerConnection.__init__(self, server_ip, callbacks)
+        self.ready_for_chat, self.on_send, self.on_receive = callbacks
+
+    def write_to_client(self):
+        self.thread = Thread(target=self.printer)
+        self.thread.daemon = True
+        self.thread.start()
+
+        self.ready_for_chat(self.send_message)
 
     def send_message(self, message):
         self.connection.send(message.encode())
@@ -61,5 +51,24 @@ class ServerConnection:
         while True:
             buf = self.connection.recv(128)
             if len(buf) > 0:
-                self.on_receive(getpass.getuser(), self.server_ip, buf.decode())
+                user = getpass.getuser()
+                self.on_receive(user, self.server_ip, buf.decode())
 
+
+class TransferServer(ServerConnection):
+    def __init__(self, server_ip, callbacks):
+        ServerConnection.__init__(self, server_ip, callbacks)
+        self.transfer_send, self.transfer_receive = callbacks
+
+    def write_to_client(self):
+        self.transfer_send(self.stream_buffer)
+
+    def stream_buffer(self, stream_buffer):
+        while True:
+            data = stream_buffer.read(128)
+            if data:
+                self.connection.send(data)
+            else:
+                self.connection.close()
+                self.serversocket.close()
+                break

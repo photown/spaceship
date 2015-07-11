@@ -1,18 +1,12 @@
 import socket
-import sys
-from threading import Thread
 import getpass
+from threading import Thread
+
 
 class ClientConnection:
-    def __init__(self, server_ip, client_ip, mode, callbacks):
+    def __init__(self, server_ip, client_ip, callbacks):
         self.server_ip = server_ip
         self.client_ip = client_ip
-        self.mode = mode
-
-        if mode == 'chat':
-            self.ready_for_chat, self.on_send, self.on_receive = callbacks
-        elif mode == 'transfer':
-            self.transfer_send, self.transfer_receive = callbacks
 
     def start(self):
         self.clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -21,28 +15,42 @@ class ClientConnection:
 
         self.read_from_server()
 
-    def read_from_server(self):
-        if self.mode == 'transfer':
-            while True:
-                buf = self.clientsocket.recv(128)
-                if len(buf) > 0:
-                    self.transfer_receive(buf)
-                else:
-                    break
-            self.clientsocket.close()
-        elif self.mode == 'chat':
-            self.thread = Thread(target = self.printer)
-            self.thread.daemon = True
-            self.thread.start()
 
-            self.ready_for_chat(self.send_message)
-    
+class ChatClient(ClientConnection):
+    def __init__(self, server_ip, client_ip, callbacks):
+        ClientConnection.__init__(self, server_ip, client_ip, callbacks)
+        self.ready_for_chat, self.on_send, self.on_receive = callbacks
+
+    def read_from_server(self):
+        self.thread = Thread(target=self.printer)
+        self.thread.daemon = True
+        self.thread.start()
+
+        self.ready_for_chat(self.send_message)
+
     def send_message(self, message):
         self.clientsocket.send(message.encode())
         self.on_send(message)
-            
+
     def printer(self):
         while True:
             buf = self.clientsocket.recv(128)
             if len(buf) > 0:
-                self.on_receive(getpass.getuser(), self.client_ip, buf.decode())
+                user = getpass.getuser()
+                message = buf.decode()
+                self.on_receive(user, self.client_ip, message)
+
+
+class TransferClient(ClientConnection):
+    def __init__(self, server_ip, client_ip, callbacks):
+        ClientConnection.__init__(self, server_ip, client_ip, callbacks)
+        self.transfer_send, self.transfer_receive = callbacks
+
+    def read_from_server(self):
+        while True:
+            buf = self.clientsocket.recv(128)
+            if len(buf) > 0:
+                self.transfer_receive(buf)
+            else:
+                break
+        self.clientsocket.close()

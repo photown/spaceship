@@ -1,36 +1,40 @@
 import sys
 import socket
 import io
-import time, threading, traceback
+import time
+import threading
+import traceback
 import fcntl
 import struct
 import netifaces
-from core import ClientConnection
 from netifaces import AF_INET
-from core import ServerBroadcast, BroadcastListener
-from core.PairInitializer import PairInitializer
+from core.Handshake import Handshake, ServerBroadcast, BroadcastListener
+
 
 class Main:
     def __init__(self, args):
 
         ip = netifaces.ifaddresses("eth0")[AF_INET][0]['addr']
+        num = len(args)
 
         if len(args) > 1 and args[1] == 'chat':
-            channel = args[3] if len(args) > 3 and args[2] == '--channel' else ''
+            channel = args[3] if num > 3 and args[2] == '--channel' else ''
             mode = 'chat'
             callbacks = (self.ready_for_chat, self.on_send, self.on_receive)
-            
+
         else:
-            channel = args[2] if len(args) > 2 and args[1] == '--channel' else ''
+
+            channel = args[2] if num > 2 and args[1] == '--channel' else ''
             mode = 'transfer'
             callbacks = (self.transfer_send, self.transfer_receive)
 
         try:
-            PairInitializer(ip, channel, mode, callbacks).start()
+            Handshake(ip, channel, mode, callbacks).start()
         except KeyboardInterrupt:
             pass
 
     def ready_for_chat(self, send_message):
+        print("connected")
         while True:
             try:
                 data = input("")
@@ -50,6 +54,3 @@ class Main:
 
     def transfer_receive(self, stream_buffer):
         sys.stdout.buffer.write(stream_buffer)
-
-
-
