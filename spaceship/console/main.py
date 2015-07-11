@@ -25,7 +25,10 @@ class Main:
             mode = 'transfer'
             callbacks = (self.transfer_send, self.transfer_receive)
 
-        PairInitializer(ip, channel, mode, callbacks).start()
+        try:
+            PairInitializer(ip, channel, mode, callbacks).start()
+        except KeyboardInterrupt:
+            pass
 
     def ready_for_chat(self, send_message):
         while True:

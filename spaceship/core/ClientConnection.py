@@ -16,6 +16,7 @@ class ClientConnection:
 
     def start(self):
         self.clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.clientsocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.clientsocket.connect((self.server_ip, 8087))
 
         self.read_from_server()

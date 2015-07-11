@@ -1,17 +1,20 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="SPACESHIP",
-    version="0.1",
+    name="spaceship",
+    version="0.7",
     packages=find_packages(),
-    install_requires=[],
+    install_requires=[
+        'netifaces'
+    ],
+    url = 'https://github.com/antoan-angelov/spaceship/',
     author="Antoan Angelov",
     author_email="antoan.angelov+spaceship@gmail.com",
     description="Python utility for chat and streaming files across machines in the same network",
     license="MIT",
     keywords="spaceship python terminal chat stream files same network",
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 4 - Beta",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: Communications :: Chat",
         "Topic :: Utilities",

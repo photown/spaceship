@@ -46,8 +46,9 @@ class ServerConnection:
     def stream_buffer(self, stream_buffer):
         while True:
             data = stream_buffer.read(128)
-            self.connection.send(data)
-            if not data:
+            if data:
+                self.connection.send(data)
+            else:
                 self.connection.close()
                 self.serversocket.close()
                 break

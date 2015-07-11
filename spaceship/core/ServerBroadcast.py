@@ -12,12 +12,16 @@ class ServerBroadcast:
         self.callbacks = callbacks
 
     def start(self):
+        self.setup_socket()
+        self.init_server()
+
+    def setup_socket(self):
         self.cs = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.cs.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+        self.cs.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.cs.bind((self.server_ip, 8089))
 
         self.ping_broadcast()
-        self.init_server()
 
     def ping_broadcast(self):
         self.cs.sendto(self.channel.encode(), ('255.255.255.255', 8089))
