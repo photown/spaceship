@@ -14,6 +14,8 @@ from core.Handshake import Handshake, ServerBroadcast, BroadcastListener
 class Main:
     def __init__(self, args):
 
+        """Entry point for the whole project."""
+
         ip = netifaces.ifaddresses("eth0")[AF_INET][0]['addr']
         num = len(args)
 

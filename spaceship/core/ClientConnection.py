@@ -2,8 +2,12 @@ import socket
 import getpass
 from threading import Thread
 
+"""This module taces care of the server-specific logic."""
 
 class ClientConnection:
+
+    """Base class which takes care of initializing the client for either chat or transfer."""
+
     def __init__(self, server_ip, client_ip, callbacks):
         self.server_ip = server_ip
         self.client_ip = client_ip
@@ -17,6 +21,9 @@ class ClientConnection:
 
 
 class ChatClient(ClientConnection):
+
+    """Takes care of initializing the client for chat."""
+
     def __init__(self, server_ip, client_ip, callbacks):
         ClientConnection.__init__(self, server_ip, client_ip, callbacks)
         self.ready_for_chat, self.on_send, self.on_receive = callbacks
@@ -42,6 +49,9 @@ class ChatClient(ClientConnection):
 
 
 class TransferClient(ClientConnection):
+
+    """Takes care of initializing the server endpoint for transfer."""
+
     def __init__(self, server_ip, client_ip, callbacks):
         ClientConnection.__init__(self, server_ip, client_ip, callbacks)
         self.transfer_send, self.transfer_receive = callbacks
