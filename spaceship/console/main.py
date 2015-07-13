@@ -1,7 +1,7 @@
 import sys
 import netifaces
 from netifaces import AF_INET
-from core.Handshake import Handshake, ServerBroadcast, BroadcastListener
+from .core.Handshake import Handshake, ServerBroadcast, BroadcastListener
 import argparse
 
 class Main:

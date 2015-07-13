@@ -1,5 +1,8 @@
-from console.main import Main
+from .console.main import Main
 import sys
 
-if __name__ == "__main__":
+def main():
     Main()
+
+if __name__ == "__main__":
+    main()
