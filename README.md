@@ -21,7 +21,7 @@ You must have two Linux machines running on the same network.
 
 On the first one run:
 ```
-$ echo omg spaceship! | spaceship
+$ echo "omg spaceship!" | spaceship
 ```
 
 On the second one run:
@@ -33,7 +33,7 @@ This way the two machines pair and the second one receives `omg spaceship!`
 
 You can also name the channel like so:
 ```
-$ echo omg named channel! | spaceship --channel Enterprise
+$ echo "omg named channel!" | spaceship --channel Enterprise
 ```
 
 That way, another machine can only receive data if it runs `spaceship` with the same channel name:
