@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="spaceship",
-    version="0.8",
+    version="0.8.1",
     packages=find_packages(),
     install_requires=[
         'netifaces'
