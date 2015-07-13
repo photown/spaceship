@@ -3,8 +3,8 @@ import traceback
 import sys
 import time
 import threading
-from .core.ClientConnection import ChatClient, TransferClient
-from .core.ServerConnection import TransferServer, ChatServer
+from spaceship.core.ClientConnection import ChatClient, TransferClient
+from spaceship.core.ServerConnection import TransferServer, ChatServer
 
 """This module takes care of the server-client handshake business logic."""
 

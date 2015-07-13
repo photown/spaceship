@@ -1,4 +1,4 @@
-from .console.main import Main
+from spaceship.console.main import Main
 import sys
 
 def main():
