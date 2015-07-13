@@ -1,6 +1,8 @@
 # spaceship
 Python terminal utility for chat and streaming files across two Linux machines on the same network.
 
+Heavily inspired from [airpaste](https://github.com/mafintosh/airpaste).
+
 ##Installation
 
 To install the latest stable release with [pip](https://pip.pypa.io/en/stable/)
@@ -43,32 +45,32 @@ $ spaceship --channel Enterprise
 
 The above example barely scratched the surface.
 
-Let's say you want to stream a video from machine 1 to machine 2.
+Let's say you want to send an image from machine 1 to machine 2.
 
 On machine 1 run:
 ```
-$ spaceship < myvideo.mp4
+$ spaceship < image.png
 ```
 
 And on machine 2:
 ```
-$ spaceship | mplayer -
+$ spaceship | display
 ```
 
-That way the video will be streamed from machine 1 straight to [mplayer](https://www.mplayerhq.hu/) on machine 2. 
-This can be achieved with any player that supports streaming to stdin.
+That way the image will be sent from machine 1 straight to [display](http://www.imagemagick.org/script/display.php) on machine 2. 
+This can be achieved with any program that supports streaming to stdin.
 
 ##Chat
 Two machines can also send messages to each other.
 
 Both machines must either run:
 ```
-$ spaceship chat
+$ spaceship --chat
 ```
 
 or with a named channel:
 ```
-$ spaceship chat --channel Spock
+$ spaceship --chat --channel Spock
 ```
 
 When one of the machines writes a message, it gets sent to the other machine.

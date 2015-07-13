@@ -59,3 +59,5 @@ target/
 # Sublime Text project files
 spaceship.sublime-project
 spaceship.sublime-workspace
+
+spaceship/UnitTesting.py

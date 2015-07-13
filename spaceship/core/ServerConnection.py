@@ -64,7 +64,9 @@ class ChatServer(ServerConnection):
 
 class TransferServer(ServerConnection):
 
-    """Takes care of initializing the server endpoint for transfer."""
+    """Takes care of initializing the server endpoint \
+    for transfer."""
+
 
     def __init__(self, server_ip, callbacks):
         ServerConnection.__init__(self, server_ip, callbacks)

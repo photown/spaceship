@@ -4,9 +4,11 @@ from threading import Thread
 
 """This module taces care of the server-specific logic."""
 
+
 class ClientConnection:
 
-    """Base class which takes care of initializing the client for either chat or transfer."""
+    """Base class which takes care of initializing the client \
+    for either chat or transfer."""
 
     def __init__(self, server_ip, client_ip, callbacks):
         self.server_ip = server_ip

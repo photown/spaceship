@@ -8,10 +8,11 @@ from core.ServerConnection import TransferServer, ChatServer
 
 """This module takes care of the server-client handshake business logic."""
 
+
 class Handshake:
-    
+
     """Initializes either the server or the client depending on mode"""
-    
+
     def __init__(self, ip, channel, mode, callbacks):
         self.ip = ip
         self.channel = channel
@@ -43,9 +44,9 @@ class Handshake:
 
 
 class ServerBroadcast:
-    
+
     """Takes care of UDP broadcasts to the whole network."""
-    
+
     def __init__(self, server_ip, channel, mode, callbacks):
         self.server_ip = server_ip
         self.channel = channel
@@ -86,8 +87,9 @@ class ServerBroadcast:
 
 class BroadcastListener:
 
-    """Listens to the broadcasts emmited from ServerBroadcast and initializes TCP connection"""
-    
+    """Listens to the broadcasts emmited from ServerBroadcast and \
+    initializes TCP connection"""
+
     def __init__(self, client_ip, channel):
 
         self.client_ip = client_ip

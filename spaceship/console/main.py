@@ -1,32 +1,27 @@
 import sys
-import socket
-import io
-import time
-import threading
-import traceback
-import fcntl
-import struct
 import netifaces
 from netifaces import AF_INET
 from core.Handshake import Handshake, ServerBroadcast, BroadcastListener
-
+import argparse
 
 class Main:
-    def __init__(self, args):
+    def __init__(self):
 
         """Entry point for the whole project."""
 
         ip = netifaces.ifaddresses("eth0")[AF_INET][0]['addr']
-        num = len(args)
 
-        if len(args) > 1 and args[1] == 'chat':
-            channel = args[3] if num > 3 and args[2] == '--channel' else ''
+        parser = argparse.ArgumentParser()
+        parser.add_argument("-c", "--chat", help="chat mode", action="store_true")
+        parser.add_argument("-n", "--channel", help="set channel name", default='')
+        args = parser.parse_args()
+
+        channel = args.channel
+
+        if args.chat:
             mode = 'chat'
             callbacks = (self.ready_for_chat, self.on_send, self.on_receive)
-
         else:
-
-            channel = args[2] if num > 2 and args[1] == '--channel' else ''
             mode = 'transfer'
             callbacks = (self.transfer_send, self.transfer_receive)
 
